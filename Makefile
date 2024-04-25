@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/04/25 00:11:55 by jcummins         ###   ########.fr        #
+#    Updated: 2024/04/25 21:49:08 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ clean:
 
 fclean: clean
 	@echo "Removing all object files and executable"
-	@rm -rf $(CLIENT) $(SERVER)
+	@rm -rf $(NAME)
 	@(cd $(LIB_DIR) && make fclean)
 
 re:	fclean all
