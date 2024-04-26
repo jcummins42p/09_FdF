@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/25 20:54:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:29:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "libft.h"
 # include <mlx.h>
 # include <math.h>
+
+# define RES_H	600
+# define RES_W	800
 
 typedef struct	s_unit_vect
 {
