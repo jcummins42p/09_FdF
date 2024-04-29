@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/26 16:58:00 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:29:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 
 # define RES_H	600
 # define RES_W	800
+
+typedef struct	s_mlx_vars
+{
+	void	*mlx;
+	void	*win;
+}				t_mlx_vars;
 
 typedef struct	s_unit_vect
 {
@@ -43,6 +49,18 @@ typedef struct	s_data
 	int		line_length;
 	int		endian;
 }				t_data;
+
+typedef struct	s_map
+{
+	char			*name;
+	int				fd;
+	unsigned int	width_x;
+	unsigned int	height_y;
+	t_vector		**points;
+}				t_map;
+
+//		mlx
+int			mlx_close(int keycode, t_mlx_vars *vars);
 
 //		drawfuncts.c
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
