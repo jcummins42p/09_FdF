@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/04/25 21:49:08 by jcummins         ###   ########.fr        #
+#    Updated: 2024/04/29 23:19:16 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB_PATH) $(HEADERS)
-	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_PATH) -Lmlx_linux -lmlx_Linux -lXext -lX11 -lm -lz
+	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR) -Lmlx_linux -lmlx_Linux -lXext -lX11 -lm -lz -lft
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 $(LIB_PATH):
 	@echo "Running libft make"

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/29 20:45:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/30 00:05:48 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	map_init(t_map *map)
 	char			**spline;
 	unsigned int	x;
 	unsigned int	y;
-	unsigned int	scale = 50;
-	unsigned int	offset = 100;
+	unsigned int	scale = 2;
+	unsigned int	offset = 50;
 
 	y = 0;
 	map->points = malloc(sizeof (t_vector **));
@@ -67,13 +67,28 @@ void	draw_map(t_map *map)
 			connect_points(img, &map->points[y + 1][x], &map->points[y][x + 1]);
 			connect_points(img, &map->points[y + 1][x], &map->points[y + 1][x + 1]);
 			connect_points(img, &map->points[y][x + 1], &map->points[y + 1][x + 1]);
-			/*draw_circle(img, &map->points[y][x], 5, 0x00FF00FF);*/
+			draw_circle(img, &map->points[y][x], 5, 0x00FF00FF);
 			x++;
 		}
 		y++;
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 	mlx_loop(mlx->mlx);
+}
+
+void	free_split(char **split)
+{
+	char	**head;
+
+	if (!split)
+		return ;
+	head = split;
+	while (*split)
+	{
+		free(*split);
+		split++;
+	}
+	free(head);
 }
 
 int	set_dimensions(t_map *map)
@@ -86,6 +101,8 @@ int	set_dimensions(t_map *map)
 	y = 0;
 	map->width_x = 0;
 	line = get_next_line(map->fd);
+	if (!line)
+		return (0);
 	while (line)
 	{
 		y++;
@@ -94,7 +111,12 @@ int	set_dimensions(t_map *map)
 		while (split_line[x] != NULL)
 			x++;
 		if (map->width_x && map->width_x != x)
+		{
+			free_split(split_line);
+			free(line);
 			return (0);
+		}
+		free(line);
 		map->width_x = x;
 		line = get_next_line(map->fd);
 	}
