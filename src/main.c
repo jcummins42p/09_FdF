@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/29 20:37:15 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:45:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	map_init(t_map *map)
 	char			**spline;
 	unsigned int	x;
 	unsigned int	y;
-	unsigned int	scale = 4;
+	unsigned int	scale = 50;
 	unsigned int	offset = 100;
 
 	y = 0;
@@ -45,10 +45,6 @@ void	draw_map(t_map *map)
 {
 	t_mlx_vars		*mlx;
 	t_data			img;
-	/*t_vector		*direction;*/
-	/*t_vector		*origin;*/
-	/*t_vector		*end;*/
-	/*t_unit_vect		*unt_vec;*/
 	unsigned int	x;
 	unsigned int	y;
 
@@ -76,17 +72,6 @@ void	draw_map(t_map *map)
 		}
 		y++;
 	}
-
-	/*direction = new_vector(-30, -20, 0, 0);*/
-	/*origin = new_vector(100, 100, 0, 0xFFFFFF00);*/
-	/*end = new_vector(500, 300, 0, 0x00FF00FF);*/
-	/*unt_vec = normalize_vector(direction);*/
-	/*printf("Vector length is %f\n", vector_length(direction->x, direction->y));*/
-	/*printf("Direction vector x = %d, y = %d\n", direction->x, direction->y);*/
-	/*printf("Unit vector x = %f, y = %f\n", unt_vec->x, unt_vec->y);*/
-	/*connect_points(img, origin, end);*/
-	/*draw_circle(img, origin, 5, 0x00FF00FF);*/
-	/*draw_circle(img, end, 5, 0x00FF00FF);*/
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 	mlx_loop(mlx->mlx);
 }
