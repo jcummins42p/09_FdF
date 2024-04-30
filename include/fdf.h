@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/29 19:29:07 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:49:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ typedef struct	s_map
 	int				fd;
 	unsigned int	width_x;
 	unsigned int	height_y;
-	t_vector		**points;
+	unsigned int	scale;
+	int				offset;
+	t_vector		***points;
 }				t_map;
 
 //		mlx
@@ -79,5 +81,10 @@ t_vector	*new_vector(int x, int y, int z, int c);
 
 //		circledraw.c
 void		draw_circle(t_data img, t_vector *centre, int radius, int color);
+
+//		freehelpers.c
+void		free_map(t_map *map);
+void		free_split(char **split);
+
 
 #endif

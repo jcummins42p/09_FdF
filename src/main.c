@@ -6,11 +6,20 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 00:05:48 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/30 21:07:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	map_scale(t_map *map)
+{
+	(void)map;
+	map->scale = RES_H / map->height_y;
+	if (map->scale > RES_W / map->width_x)
+		map->scale = RES_W / map->width_x;
+	map->offset = 15;
+}
 
 void	map_init(t_map *map)
 {
@@ -18,27 +27,30 @@ void	map_init(t_map *map)
 	char			**spline;
 	unsigned int	x;
 	unsigned int	y;
-	unsigned int	scale = 2;
-	unsigned int	offset = 50;
 
 	y = 0;
-	map->points = malloc(sizeof (t_vector **));
+	map->points = malloc(sizeof(t_vector **) * map->height_y);
 	line = get_next_line(map->fd);
-	while (y < map->height_y)
+	while (line && y < map->height_y)
 	{
 		map->points[y] = malloc(sizeof(t_vector *) * map->width_x);
 		spline = ft_split(line, ' ');
 		x = 0;
 		while (x < map->width_x)
 		{
-			map->points[y][x].x = (x * scale) + offset;
-			map->points[y][x].y = (y * scale) + offset;
-			map->points[y][x].z = ft_atoi(spline[x]);
-			map->points[y][x].c = 0x00FF00FF;
+			map->points[y][x] = malloc(sizeof(t_vector));
+			map->points[y][x]->z = ft_atoi(spline[x]);
+			map->points[y][x]->x = (x * map->scale) + map->offset;
+			map->points[y][x]->y = (y * map->scale) + map->offset - map->points[y][x]->z;
+			map->points[y][x]->c = 0x00FFFFFF;
 			x++;
 		}
+		free(line);
+		line = get_next_line(map->fd);
+		free_split(spline);
 		y++;
 	}
+	free(spline);
 }
 
 void	draw_map(t_map *map)
@@ -51,7 +63,7 @@ void	draw_map(t_map *map)
 	mlx = malloc(sizeof(t_mlx_vars));
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, RES_W, RES_H, map->name);
-	mlx_hook(mlx->win, 2, 1L<<0, mlx_close, &mlx);
+	mlx_hook(mlx->win, 2, 1L << 0, mlx_close, mlx);
 	img.img = mlx_new_image(mlx->mlx, RES_W, RES_H);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	y = 0;
@@ -60,35 +72,23 @@ void	draw_map(t_map *map)
 	{
 		x = 0;
 		while (x < map->width_x - 1)
-		{
-			connect_points(img, &map->points[y][x], &map->points[y][x + 1]);
-			connect_points(img, &map->points[y][x], &map->points[y + 1][x]);
-			connect_points(img, &map->points[y][x], &map->points[y + 1][x + 1]);
-			connect_points(img, &map->points[y + 1][x], &map->points[y][x + 1]);
-			connect_points(img, &map->points[y + 1][x], &map->points[y + 1][x + 1]);
-			connect_points(img, &map->points[y][x + 1], &map->points[y + 1][x + 1]);
-			draw_circle(img, &map->points[y][x], 5, 0x00FF00FF);
+	   	{
+			connect_points(img, map->points[y][x], map->points[y][x + 1]);
+			connect_points(img, map->points[y][x], map->points[y + 1][x]);
 			x++;
 		}
+		connect_points(img, map->points[y][x], map->points[y + 1][x]);
 		y++;
+	}
+	x = 0;
+	while (x < map->width_x - 1)
+	{
+		connect_points(img, map->points[y][x], map->points[y][x + 1]);
+		x++;
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 	mlx_loop(mlx->mlx);
-}
-
-void	free_split(char **split)
-{
-	char	**head;
-
-	if (!split)
-		return ;
-	head = split;
-	while (*split)
-	{
-		free(*split);
-		split++;
-	}
-	free(head);
+	free_map(map);
 }
 
 int	set_dimensions(t_map *map)
@@ -116,11 +116,13 @@ int	set_dimensions(t_map *map)
 			free(line);
 			return (0);
 		}
+		free_split(split_line);
 		free(line);
 		map->width_x = x;
 		line = get_next_line(map->fd);
 	}
 	map->height_y = y;
+	map_scale(map);
 	close(map->fd);
 	map->fd = open(map->name, O_RDONLY);
 	return (1);
