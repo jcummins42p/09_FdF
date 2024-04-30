@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 23:23:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:55:44 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	map_scale(t_map *map)
 	map->scale = RES_H / map->height_y;
 	if (map->scale > RES_W / map->width_x)
 		map->scale = RES_W / map->width_x;
-	map->offset = 15;
+	map->offset = map->scale;
 }
 
 void	map_init(t_map *map)
@@ -42,7 +42,7 @@ void	map_init(t_map *map)
 			map->points[y][x]->z = ft_atoi(spline[x]);
 			map->points[y][x]->x = (x * map->scale) + map->offset;
 			map->points[y][x]->y = (y * map->scale) + map->offset - map->points[y][x]->z;
-			map->points[y][x]->c = 0x00FFFFFF;
+			map->points[y][x]->c = 0x00aa00bbcc + (map->points[y][x]->z * 30);
 			x++;
 		}
 		free(line);
@@ -177,8 +177,7 @@ int	main(int argc, char *argv[])
 			return (1);
 		}
 		ft_printf("%s: %d x %d\n", map->name, map->height_y, map->width_x);
-		/*draw_map(map);*/
-		test_colourshift();
+		draw_map(map);
 	}
 	return (0);
 }
