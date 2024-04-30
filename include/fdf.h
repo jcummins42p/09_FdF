@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 19:49:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/30 23:03:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int			mlx_close(int keycode, t_mlx_vars *vars);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		draw_horizontal_line(t_data img, int y, int x_origin, const int x_end);
 void		draw_vertical_line(t_data img, int x, int y_origin, const int y_end);
-void		draw_lline(t_data img, t_vector *origin, t_vector *direction, float length);
+void		draw_lline(t_data img, t_vector *origin, t_vector *direction, float length, float dc);
 void		draw_line(t_data img, t_vector *origin, t_vector *direction);
 void		connect_points(t_data img, t_vector *origin, t_vector *end);
 

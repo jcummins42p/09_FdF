@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:11:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/26 17:46:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/04/30 23:05:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,18 @@ void	draw_vertical_line(t_data img, int x, int y_origin, const int y_end)
 }
 
 //		draw a direction vector from a position vector for set length
-void	draw_lline(t_data img, t_vector *origin, t_vector *direction, float length)
+void	draw_lline(t_data img, t_vector *origin, t_vector *direction, float length, float dc)
 {
 	float	dx = norm_vd(direction, direction->x);
 	float	dy = norm_vd(direction, direction->y);
 	float	curr_length;
-	int	i;
+	int		i;
 
 	i = 0;
 	curr_length = 0;
 	while (curr_length <= length)
 	{
-		my_mlx_pixel_put(&img, (origin->x + (i * dx)), (origin->y + (i * dy)), origin->c);
+		my_mlx_pixel_put(&img, (origin->x + (i * dx)), (origin->y + (i * dy)), (origin->c + (i * dc)));
 		i++;
 		curr_length = vector_length(i * dx, i * dy);
 	}
@@ -90,6 +90,7 @@ void	connect_points(t_data img, t_vector *origin, t_vector *end)
 {
 	t_vector	*direction;
 	float		length;
+	float		colour;
 
 	direction = malloc(sizeof(t_vector));
 	if (!direction)
@@ -97,6 +98,7 @@ void	connect_points(t_data img, t_vector *origin, t_vector *end)
 	direction->x = end->x - origin->x;
 	direction->y = end->y - origin->y;
 	length = vector_length(direction->x, direction->y);
-	draw_lline(img, origin, direction, length);
+	colour = (end->c - origin->c) / length;
+	draw_lline(img, origin, direction, length, colour);
 	free (direction);
 }
