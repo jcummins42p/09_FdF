@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:16:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 20:42:25 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:48:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ void	free_map(t_map *map)
 		}
 		free(map->points[y++]);
 	}
-	/*free(map->name);*/
+	free(map->points);
 	free(map);
 }
 
 void	free_split(char **split)
 {
-	/*char	**head;*/
+	char	**head;
 
 	if (!split)
 		return ;
-	/*head = split;*/
+	head = split;
 	while (*split)
 	{
 		free(*split);
 		split++;
 	}
-	/*free(head);*/
+	free(head);
 }

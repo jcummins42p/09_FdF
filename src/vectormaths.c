@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:05:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 18:18:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:48:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ float	norm_vd(t_vector *direction, int dimension)
 	float	v_len;
 
 	v_len = vector_length(direction->x, direction->y);
-	if(v_len != 0)
+	if (v_len != 0)
 		return (dimension / v_len);
 	else
 		return (0);

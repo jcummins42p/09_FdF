@@ -6,13 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:11:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/04/30 23:05:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:02:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_img_vars *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -22,83 +22,56 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-//		draw horizontal line at set y row between two x values
-void	draw_horizontal_line(t_data img, int y, int x_origin, const int x_end)
-{
-	if (x_origin < x_end)
-	{
-		while (x_origin < x_end)
-			my_mlx_pixel_put(&img, x_origin++, y, 0x00FF0000);
-	}
-	else
-	{
-		while (x_origin > x_end)
-			my_mlx_pixel_put(&img, x_origin--, y, 0x00FF0000);
-	}
-}
-
-//		draw vertical line at set x column between two y values
-void	draw_vertical_line(t_data img, int x, int y_origin, const int y_end)
-{
-	if (y_origin < y_end)
-	{
-		while (y_origin < y_end)
-			my_mlx_pixel_put(&img, x, y_origin++, 0x00FF0000);
-	}
-	else
-	{
-		while (y_origin > y_end)
-			my_mlx_pixel_put(&img, x, y_origin--, 0x00FF0000);
-	}
-}
-
-//		draw a direction vector from a position vector for set length
-void	draw_lline(t_data img, t_vector *origin, t_vector *direction, float length, float dc)
-{
-	float	dx = norm_vd(direction, direction->x);
-	float	dy = norm_vd(direction, direction->y);
-	float	curr_length;
-	int		i;
-
-	i = 0;
-	curr_length = 0;
-	while (curr_length <= length)
-	{
-		my_mlx_pixel_put(&img, (origin->x + (i * dx)), (origin->y + (i * dy)), (origin->c + (i * dc)));
-		i++;
-		curr_length = vector_length(i * dx, i * dy);
-	}
-}
-
-//		draw a direction vector from a position for correct length of direction vector
-void	draw_line(t_data img, t_vector *origin, t_vector *direction)
-{
-	float	dx = norm_vd(direction, direction->x);
-	float	dy = norm_vd(direction, direction->y);
-	int	i;
-
-	i = 0;
-	while (i * dy <= direction->y)
-	{
-		my_mlx_pixel_put(&img, (origin->x + (i * dx)), (origin->y + (i * dy)), origin->c);
-		i++;
-	}
-}
-
-//		draw a line between two position vectors
-void	connect_points(t_data img, t_vector *origin, t_vector *end)
+t_vector	*direction_vector(t_vector *origin, t_vector *end)
 {
 	t_vector	*direction;
-	float		length;
-	float		colour;
 
 	direction = malloc(sizeof(t_vector));
 	if (!direction)
-		return ;
+		return (NULL);
 	direction->x = end->x - origin->x;
 	direction->y = end->y - origin->y;
-	length = vector_length(direction->x, direction->y);
-	colour = (end->c - origin->c) / length;
-	draw_lline(img, origin, direction, length, colour);
-	free (direction);
+	direction->dx = norm_vd(direction, direction->x);
+	direction->dy = norm_vd(direction, direction->y);
+	direction->length = vector_length(direction->x, direction->y);
+	return (direction);
 }
+
+void	connect_points(t_img_vars img, t_vector *origin, t_vector *end)
+{
+	t_vector	*dir;
+	float		curr_length;
+	int			colour;
+	int			i;
+
+	dir = direction_vector(origin, end);
+	curr_length = 0;
+	i = 0;
+	while (curr_length <= dir->length)
+	{
+		colour = colour_gradient(origin->c, end->c, curr_length / dir->length);
+		my_mlx_pixel_put(&img, (origin->x + (i * dir->dx)), (origin->y + (i * dir->dy)), (origin->c));
+		i++;
+		curr_length = vector_length(i * dir->dx, i * dir->dy);
+	}
+	free (dir);
+}
+
+//		calculate the colour at a specific point along a line between 2 pixels
+int	colour_gradient(int	c1, int c2, float ratio)
+{
+	int	r;
+	int	g;
+	int b;
+
+	r = (c1 >> 16) + ;
+	g = c1 >> 8 & 0xFF;
+	b = c1 & 0xFF;
+	ft_printf("C1 RED: %d, GREEN: %d, BLUE: %d\n", r, g, b);
+	r = c2 >> 16;
+	g = c2 >> 8 & 0xFF;
+	b = c2 & 0xFF;
+	ft_printf("C2 RED: %d, GREEN: %d, BLUE: %d\n", r, g, b);
+	return (1);
+}
+

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/01 00:55:44 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:07:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,35 @@ void	map_init(t_map *map)
 			x++;
 		}
 		free(line);
-		line = get_next_line(map->fd);
 		free_split(spline);
+		line = get_next_line(map->fd);
 		spline = ft_split(line, ' ');
 		y++;
 	}
-	free(spline);
+	free(line);
+	free_split(spline);
 }
 
-void	draw_map(t_map *map)
+int	draw_map(t_map *map)
 {
 	t_mlx_vars		*mlx;
-	t_data			img;
+	t_img_vars		img;
 	unsigned int	x;
 	unsigned int	y;
 
 	mlx = malloc(sizeof(t_mlx_vars));
 	mlx->mlx = mlx_init();
+	if (mlx->mlx == NULL)
+		return (0);
 	mlx->win = mlx_new_window(mlx->mlx, RES_W, RES_H, map->name);
-	mlx_hook(mlx->win, 2, 1L << 0, mlx_close, mlx);
+	if (mlx->win == NULL)
+	{
+		free(mlx->win);
+		return (0);
+	}
+	mlx_loop_hook(mlx->mlx, &handle_no_event, mlx);
+	mlx_hook(mlx->win, KeyPress, KeyPressMask, &handle_keypress, mlx);
+	mlx_hook(mlx->win, KeyRelease, KeyReleaseMask, &handle_keyrelease, mlx);
 	img.img = mlx_new_image(mlx->mlx, RES_W, RES_H);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	y = 0;
@@ -73,7 +83,7 @@ void	draw_map(t_map *map)
 	{
 		x = 0;
 		while (x < map->width_x - 1)
-		   {
+		{
 			connect_points(img, map->points[y][x], map->points[y][x + 1]);
 			connect_points(img, map->points[y][x], map->points[y + 1][x]);
 			x++;
@@ -89,7 +99,11 @@ void	draw_map(t_map *map)
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 	mlx_loop(mlx->mlx);
+	mlx_destroy_image(mlx->mlx, img.img);
+	mlx_destroy_display(mlx->mlx);
 	free_map(map);
+	free(mlx);
+	return (1);
 }
 
 int	set_dimensions(t_map *map)
@@ -129,38 +143,10 @@ int	set_dimensions(t_map *map)
 	return (1);
 }
 
-void	test_colourshift(void)
-{
-	t_mlx_vars		*mlx;
-	t_data			img;
-	t_vector		*a;
-	t_vector		*b;
-
-	a = malloc(sizeof(t_vector));
-	b = malloc(sizeof(t_vector));
-	a->x = 100;
-	a->y = 100;
-	a->c = 0x0000AA00;
-	b->x = 400;
-	b->y = 400;
-	b->c = 0x00AA00AA;
-	mlx = malloc(sizeof(t_mlx_vars));
-	mlx->mlx = mlx_init();
-	mlx->win = mlx_new_window(mlx->mlx, RES_W, RES_H, "TESTWINDOW");
-	mlx_hook(mlx->win, 2, 1L << 0, mlx_close, mlx);
-	img.img = mlx_new_image(mlx->mlx, RES_W, RES_H);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-
-	connect_points(img, a, b);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
-	mlx_loop(mlx->mlx);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_map	*map;
 
-	map = malloc(sizeof (t_map));
 	(void)argv;
 	if (argc != 2)
 	{
@@ -169,11 +155,13 @@ int	main(int argc, char *argv[])
 	}
 	else
 	{
+		map = malloc(sizeof (t_map));
 		map->fd = open(argv[1], O_RDONLY);
 		map->name = (argv[1]);
 		if (!set_dimensions(map))
 		{
 			ft_printf("Invalid map file\n");
+			free(map);
 			return (1);
 		}
 		ft_printf("%s: %d x %d\n", map->name, map->height_y, map->width_x);
