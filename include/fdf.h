@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/01 19:41:29 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:12:55 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ typedef struct	s_vector
 	int		y;
 	int		z;
 	int		c;
+	int		c_red;
+	int		c_grn;
+	int		c_blu;
 	float	length;
-	float	dx;
-	float	dy;
 }				t_vector;
 
 typedef struct	s_img_vars
@@ -76,11 +77,10 @@ int			handle_keypress(int keysym, t_mlx_vars *vars);
 
 //		drawfuncts.c
 void		my_mlx_pixel_put(t_img_vars *data, int x, int y, int color);
-void		draw_horizontal_line(t_img_vars img, int y, int x_origin, const int x_end);
-void		draw_vertical_line(t_img_vars img, int x, int y_origin, const int y_end);
-t_vector	*dir_vector(t_vector *origin, t_vector *end);
-void		draw_line(t_img_vars img, t_vector *origin, t_vector *direction);
+t_vector	*direction_vector(t_vector *origin, t_vector *end);
 void		connect_points(t_img_vars img, t_vector *origin, t_vector *end);
+void		colour_components(t_vector *vector);
+int			colour_gradient(t_vector *origin, t_vector *end, float ratio);
 
 //		vectormath.c
 float		vector_length(int x, int y);

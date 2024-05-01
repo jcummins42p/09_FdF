@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/01 17:07:35 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:34:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	map_init(t_map *map)
 			map->points[y][x]->z = ft_atoi(spline[x]);
 			map->points[y][x]->x = (x * map->scale) + map->offset;
 			map->points[y][x]->y = (y * map->scale) + map->offset - map->points[y][x]->z;
-			map->points[y][x]->c = 0x00aa00bbcc + (map->points[y][x]->z * 30);
+			map->points[y][x]->c = 100 + (map->points[y][x]->z * 10);
 			x++;
 		}
 		free(line);
