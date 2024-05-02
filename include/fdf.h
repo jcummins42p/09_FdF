@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/02 18:06:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:41:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@
 
 # define RES_H	600
 # define RES_W	800
-
-typedef struct	s_mlx_vars
-{
-	void	*mlx;
-	void	*win;
-}				t_mlx_vars;
 
 typedef struct	s_unit_vect
 {
@@ -70,6 +64,13 @@ typedef struct	s_map
 	t_vector		***points;
 }				t_map;
 
+typedef struct	s_mlx_vars
+{
+	void	*mlx;
+	void	*win;
+	t_map	*map;
+}				t_mlx_vars;
+
 //		mlx
 int			mlx_close(int keycode, t_mlx_vars *vars);
 int			handle_no_event(void *vars);
@@ -97,5 +98,7 @@ void		draw_circle(t_img_vars img, t_vector *centre, int radius, int color);
 void		free_map(t_map *map);
 void		free_split(char **split);
 
+//		main.c
+int			draw_map(t_map *map, t_mlx_vars *mlx);
 
 #endif
