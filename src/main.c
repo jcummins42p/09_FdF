@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/01 21:34:15 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:43:12 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,33 @@
 void	map_scale(t_map *map)
 {
 	(void)map;
-	map->scale = RES_H / map->height_y;
-	if (map->scale > RES_W / map->width_x)
-		map->scale = RES_W / map->width_x;
-	map->offset = map->scale;
+	map->scale = 2 * (RES_H / (map->height_y + map->width_x));
+	/*if (map->scale > (RES_W / map->width_x))*/
+		/*map->scale = (RES_W / map->width_x);*/
+	map->offset_x = RES_W >> 1;
+	map->offset_y = map->scale;
+}
+
+void	get_colour(t_vector *point, char *str)
+{
+	char	**spl_point;
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '\n' && str[i] != '-' && !ft_isdigit(str[i]))
+		{
+			spl_point = ft_split(str, ',');
+			point->z = ft_atoi(spl_point[0]);
+			point->c = ft_atoi_hex(spl_point[1]);
+			free_split(spl_point);
+			return ;
+		}
+		i++;
+	}
+	point->z = ft_atoi(str);
+	point->c = 0x00FFFFFF;
 }
 
 void	map_init(t_map *map)
@@ -39,10 +62,9 @@ void	map_init(t_map *map)
 		while (x < map->width_x)
 		{
 			map->points[y][x] = malloc(sizeof(t_vector));
-			map->points[y][x]->z = ft_atoi(spline[x]);
-			map->points[y][x]->x = (x * map->scale) + map->offset;
-			map->points[y][x]->y = (y * map->scale) + map->offset - map->points[y][x]->z;
-			map->points[y][x]->c = 100 + (map->points[y][x]->z * 10);
+			map->points[y][x]->x = (x * map->scale) - (y * map->scale) + map->offset_x;
+			get_colour(map->points[y][x], spline[x]);
+			map->points[y][x]->y = ((map->scale / 2) * (x + y)) + map->offset_y - map->points[y][x]->z;
 			x++;
 		}
 		free(line);

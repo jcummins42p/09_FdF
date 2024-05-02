@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/01 21:12:55 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:06:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_vector
 	int		x;
 	int		y;
 	int		z;
-	int		c;
+	unsigned int		c;
 	int		c_red;
 	int		c_grn;
 	int		c_blu;
@@ -65,7 +65,8 @@ typedef struct	s_map
 	unsigned int	width_x;
 	unsigned int	height_y;
 	unsigned int	scale;
-	int				offset;
+	unsigned int	offset_x;
+	unsigned int	offset_y;
 	t_vector		***points;
 }				t_map;
 

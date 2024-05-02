@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/04/29 23:19:16 by jcummins         ###   ########.fr        #
+#    Updated: 2024/05/02 18:12:56 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ $(NAME): $(OBJS) $(LIB_PATH) $(HEADERS)
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -I/usr/include -I$(HEADER_DIR) -Imlx_linux -O3 -c $< -o $@
 
 $(LIB_PATH):
 	@echo "Running libft make"
