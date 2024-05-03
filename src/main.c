@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/03 17:59:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:15:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 
 void set_scale(t_map *map)
 {
-    /*float aspect_ratio;*/
     int base_scale_w;
     int base_scale_h;
+	/*int	grid_width;*/
+	int	grid_height;
 
-    /*aspect_ratio = (float)map->width_x / (float)map->height_y;*/
-    base_scale_w = RES_W / map->width_x;
-    base_scale_h = RES_H / map->height_y;
+    base_scale_w = (RES_W / map->width_x) >> 1;
+    base_scale_h = (RES_H / map->height_y) >> 1;
 	if (base_scale_w < base_scale_h)
 	   	map->scale = base_scale_w;
 	else
 		map->scale = base_scale_h;
 	if (map->scale < 1)
 		map->scale = 1;
-    map->offset_x = (RES_W - (map->width_x * map->scale)) / 2;
-    map->offset_y = (RES_H - (map->height_y * map->scale)) / 2;
+	/*grid_width = (map->width_x + map->height_y) * map->scale / 2;*/
+	grid_height = (map->width_x + map->height_y) * map->scale / 4;
+	map->offset_x = (RES_W) / 2;
+	map->offset_y = ((RES_H - grid_height) >> 1);
+	if (map->scale == 1)
+	{
+		map->offset_x = (RES_W) >> 1;
+		map->offset_y = (RES_H - grid_height) >> 1;
+	}
 }
 
 void	set_height_colour(t_map *map, t_vector *point, char *str)
@@ -100,12 +107,37 @@ void	project_map(t_map *map)
 		while (x < map->width_x)
 		{
 			map->points[y][x]->px = map->scale * (x - y) + map->offset_x;
-			map->points[y][x]->py = ((map->scale / 2) * \
-					(x + y)) + map->offset_y - map->points[y][x]->z;
+			map->points[y][x]->py = ((map->scale * \
+					(x + y)) / 2) + map->offset_y - map->points[y][x]->z;
 			x++;
 		}
 		y++;
 	}
+}
+
+int	draw_pixel_map(t_map *map, t_mlx_vars *mlx)
+{
+	t_img_vars		img;
+	unsigned int	x;
+	unsigned int	y;
+
+	ft_printf("Using more efficient pixel put\n");
+	img.img = mlx_new_image(mlx->mlx, RES_W, RES_H);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	y = 0;
+	while (y < map->height_y)
+	{
+		x = 0;
+		while (x < map->width_x)
+		{
+			my_mlx_pixel_put(&img, map->points[y][x]->px, map->points[y][x]->py, map->points[y][x]->c);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
+	mlx_destroy_image(mlx->mlx, img.img);
+	return (1);
 }
 
 int	draw_map(t_map *map, t_mlx_vars *mlx)
@@ -247,9 +279,11 @@ int	main(int argc, char *argv[])
 	mlx_hook(mlx->win, KeyPress, KeyPressMask, &handle_keypress, mlx);
 	mlx_hook(mlx->win, KeyRelease, KeyReleaseMask, &handle_keyrelease, mlx);
 	ft_printf("%s: %d x %d\n", map->name, map->height_y, map->width_x);
-	draw_map(map, mlx);
+	if (map->scale > 1)
+		draw_map(map, mlx);
+	else
+		draw_pixel_map(map, mlx);
 	mlx_loop(mlx->mlx);
-	/*mlx_destroy_window(mlx->mlx, mlx->win);*/
 	mlx_destroy_display(mlx->mlx);
 	free_map(map);
 	free(mlx);

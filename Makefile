@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/05/02 18:12:56 by jcummins         ###   ########.fr        #
+#    Updated: 2024/05/03 21:49:24 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,10 @@ SRC_DIR = src
 OBJ_DIR = obj
 CC = cc
 CFLAGS = -g -Werror -Wextra -Wall -pedantic -I$(HEADER_DIR) -Imlx_linux -O3
+MLXFLAGS = -lmlx_Linux -lXext -lX11 -lm -lz -lft
 LIB = libft.a
 LIB_DIR = lib
+MLX_DIR = mlx_linux
 LIB_PATH = $(LIB_DIR)/$(LIB)
 
 SRCS = $(shell find $(SRC_DIR) -name '*.c')
@@ -28,7 +30,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB_PATH) $(HEADERS)
-	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR) -Lmlx_linux -lmlx_Linux -lXext -lX11 -lm -lz -lft
+	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR) -L$(MLX_DIR) $(MLXFLAGS)
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
