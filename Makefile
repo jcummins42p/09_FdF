@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/05/03 21:49:24 by jcummins         ###   ########.fr        #
+#    Updated: 2024/05/04 00:56:59 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER_DIR = include
 SRC_DIR = src
 OBJ_DIR = obj
 CC = cc
-CFLAGS = -g -Werror -Wextra -Wall -pedantic -I$(HEADER_DIR) -Imlx_linux -O3
+CFLAGS = -g -Werror -Wextra -Wall -pedantic -I$(HEADER_DIR) -Imlx_linux -O3 #-fsanitize=address
 MLXFLAGS = -lmlx_Linux -lXext -lX11 -lm -lz -lft
 LIB = libft.a
 LIB_DIR = lib

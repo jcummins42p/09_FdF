@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/04 00:15:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:55:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,15 @@ void	map_init(t_map *map)
 	unsigned int	x;
 	unsigned int	y;
 
+	map->fd = open(map->name, O_RDONLY);
+	if (map->fd < 0)
+		return ;
 	map->points = malloc(sizeof(t_vector **) * map->height_y);
 	if (!map->points)
+	{
+		close(map->fd);
 		return ;
+	}
 	y = 0;
 	line = get_next_line(map->fd);
 	spline = ft_split(line, ' ');
@@ -93,6 +99,7 @@ void	map_init(t_map *map)
 	}
 	free(line);
 	free_split(spline);
+	close(map->fd);
 }
 
 void	project_map(t_map *map)
@@ -204,7 +211,6 @@ int	set_dimensions(t_map *map)
 	}
 	map->height_y = y;
 	close(map->fd);
-	map->fd = open(map->name, O_RDONLY);
 	return (1);
 }
 
@@ -286,6 +292,7 @@ int	main(int argc, char *argv[])
 	mlx_loop(mlx->mlx);
 	mlx_destroy_display(mlx->mlx);
 	free_map(map);
+	free(mlx->mlx);
 	free(mlx);
 	return (0);
 }
