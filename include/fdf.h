@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/03 16:01:08 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:57:00 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,12 @@ int			handle_keypress(int keysym, t_mlx_vars *vars);
 void		my_mlx_pixel_put(t_img_vars *data, int x, int y, int color);
 t_vector	*direction_vector(t_vector *origin, t_vector *end);
 void		connect_points(t_img_vars img, t_vector *origin, t_vector *end);
+
+//		funcs_colour.c
 void		colour_components(t_vector *vector);
 int			colour_gradient(t_vector *origin, t_vector *end, float ratio);
+int			colour_increment(int origin, int increment);
+int			get_colour_arg(char *str);
 
 //		vectormath.c
 float		vector_length(int x, int y);

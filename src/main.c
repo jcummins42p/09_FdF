@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/03 16:09:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:59:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,21 @@
 
 void set_scale(t_map *map)
 {
-    float aspect_ratio;
+    /*float aspect_ratio;*/
     int base_scale_w;
     int base_scale_h;
 
-    aspect_ratio = (float)map->width_x / (float)map->height_y;
+    /*aspect_ratio = (float)map->width_x / (float)map->height_y;*/
     base_scale_w = RES_W / map->width_x;
     base_scale_h = RES_H / map->height_y;
-    map->scale = (base_scale_w < base_scale_h) ? base_scale_w : base_scale_h;
+	if (base_scale_w < base_scale_h)
+	   	map->scale = base_scale_w;
+	else
+		map->scale = base_scale_h;
 	if (map->scale < 1)
 		map->scale = 1;
     map->offset_x = (RES_W - (map->width_x * map->scale)) / 2;
     map->offset_y = (RES_H - (map->height_y * map->scale)) / 2;
-}
-
-int get_colour_arg(char *str)
-{
-	if (!ft_strncmp(str, "RED", 3))
-		return (0x00FF0000);
-	else
-		return (0x00FFFFFF);
 }
 
 void	set_height_colour(t_map *map, t_vector *point, char *str)
@@ -55,7 +50,7 @@ void	set_height_colour(t_map *map, t_vector *point, char *str)
 		i++;
 	}
 	point->z = ft_atoi(str) * map->z_scale;
-	point->c = map->c_default;
+	point->c = colour_increment(map->c_default, point->z);
 }
 
 void	map_init(t_map *map)
@@ -93,7 +88,7 @@ void	map_init(t_map *map)
 	free_split(spline);
 }
 
-void	map_project(t_map *map)
+void	project_map(t_map *map)
 {
 	unsigned int	x;
 	unsigned int	y;
@@ -222,7 +217,7 @@ int	main(int argc, char *argv[])
 	}
 	set_scale(map);
 	map_init(map);
-	map_project(map);
+	project_map(map);
 	mlx = malloc(sizeof(t_mlx_vars));
 	if (mlx == NULL)
 	{
