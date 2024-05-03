@@ -6,23 +6,37 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/02 20:21:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:09:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	map_scale(t_map *map)
+void set_scale(t_map *map)
 {
-	(void)map;
-	map->scale = 2 * (RES_H / (map->height_y + map->width_x));
-	/*if (map->scale > (RES_W / map->width_x))*/
-		/*map->scale = (RES_W / map->width_x);*/
-	map->offset_x = RES_W >> 1;
-	map->offset_y = map->scale;
+    float aspect_ratio;
+    int base_scale_w;
+    int base_scale_h;
+
+    aspect_ratio = (float)map->width_x / (float)map->height_y;
+    base_scale_w = RES_W / map->width_x;
+    base_scale_h = RES_H / map->height_y;
+    map->scale = (base_scale_w < base_scale_h) ? base_scale_w : base_scale_h;
+	if (map->scale < 1)
+		map->scale = 1;
+    map->offset_x = (RES_W - (map->width_x * map->scale)) / 2;
+    map->offset_y = (RES_H - (map->height_y * map->scale)) / 2;
 }
 
-void	get_colour(t_vector *point, char *str)
+int get_colour_arg(char *str)
+{
+	if (!ft_strncmp(str, "RED", 3))
+		return (0x00FF0000);
+	else
+		return (0x00FFFFFF);
+}
+
+void	set_height_colour(t_map *map, t_vector *point, char *str)
 {
 	char	**spl_point;
 	int		i;
@@ -33,15 +47,15 @@ void	get_colour(t_vector *point, char *str)
 		if (str[i] != '\n' && str[i] != '-' && !ft_isdigit(str[i]))
 		{
 			spl_point = ft_split(str, ',');
-			point->z = ft_atoi(spl_point[0]);
+			point->z = ft_atoi(spl_point[0]) * map->z_scale;
 			point->c = ft_atoi_hex(spl_point[1]);
 			free_split(spl_point);
 			return ;
 		}
 		i++;
 	}
-	point->z = ft_atoi(str);
-	point->c = 0x00FFFFFF;
+	point->z = ft_atoi(str) * map->z_scale;
+	point->c = map->c_default;
 }
 
 void	map_init(t_map *map)
@@ -64,9 +78,9 @@ void	map_init(t_map *map)
 		while (x < map->width_x)
 		{
 			map->points[y][x] = malloc(sizeof(t_vector));
-			map->points[y][x]->x = (x * map->scale) - (y * map->scale) + map->offset_x;
-			get_colour(map->points[y][x], spline[x]);
-			map->points[y][x]->y = ((map->scale / 2) * (x + y)) + map->offset_y - map->points[y][x]->z;
+			map->points[y][x]->x = x;
+			set_height_colour(map, map->points[y][x], spline[x]);
+			map->points[y][x]->y = y;
 			x++;
 		}
 		free(line);
@@ -77,6 +91,26 @@ void	map_init(t_map *map)
 	}
 	free(line);
 	free_split(spline);
+}
+
+void	map_project(t_map *map)
+{
+	unsigned int	x;
+	unsigned int	y;
+
+	y = 0;
+	while (y < map->height_y)
+	{
+		x = 0;
+		while (x < map->width_x)
+		{
+			map->points[y][x]->px = map->scale * (x - y) + map->offset_x;
+			map->points[y][x]->py = ((map->scale / 2) * \
+					(x + y)) + map->offset_y - map->points[y][x]->z;
+			x++;
+		}
+		y++;
+	}
 }
 
 int	draw_map(t_map *map, t_mlx_vars *mlx)
@@ -142,7 +176,6 @@ int	set_dimensions(t_map *map)
 		line = get_next_line(map->fd);
 	}
 	map->height_y = y;
-	map_scale(map);
 	close(map->fd);
 	map->fd = open(map->name, O_RDONLY);
 	return (1);
@@ -154,7 +187,7 @@ int	main(int argc, char *argv[])
 	t_mlx_vars		*mlx;
 
 	(void)argv;
-	if (argc != 2)
+	if (argc < 2)
 	{
 		ft_printf("Please provide a map file\n");
 		return (1);
@@ -163,6 +196,18 @@ int	main(int argc, char *argv[])
 	if (!map)
 		return (1);
 	map->fd = open(argv[1], O_RDONLY);
+	if (argc > 2)
+	{
+		map->z_scale = ft_atoi(argv[2]);
+	}
+	else
+		map->z_scale = 1;
+	if (argc > 3)
+	{
+		map->c_default = get_colour_arg(argv[3]);
+	}
+	else
+		map->c_default = 0x00FFFFFF;
 	if (map->fd < 0)
 	{
 		free (map);
@@ -175,7 +220,9 @@ int	main(int argc, char *argv[])
 		free(map);
 		return (1);
 	}
+	set_scale(map);
 	map_init(map);
+	map_project(map);
 	mlx = malloc(sizeof(t_mlx_vars));
 	if (mlx == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/02 19:41:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:01:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 //	including X11/keysym so that we can handle key hooks by symbol pressed, not
 //	keycode which can change between keyboard layouts.
 
-# define RES_H	600
-# define RES_W	800
+# define RES_H	900
+# define RES_W	1800
 
 typedef struct	s_unit_vect
 {
@@ -36,6 +36,8 @@ typedef struct	s_vector
 	int		x;
 	int		y;
 	int		z;
+	int		px;
+	int		py;
 	unsigned int		c;
 	int		c_red;
 	int		c_grn;
@@ -61,6 +63,8 @@ typedef struct	s_map
 	unsigned int	scale;
 	unsigned int	offset_x;
 	unsigned int	offset_y;
+	int				z_scale;
+	int				c_default;
 	t_vector		***points;
 }				t_map;
 

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/02 19:40:37 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:42:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	handle_keypress(int keysym, t_mlx_vars *vars)
 	else if (keysym == XK_Down)
 		vars->map->offset_x += 10;
 	ft_printf("Keypress: %d\n", keysym);
-
 	if (keysym == XK_Left || keysym == XK_Right || keysym == XK_Up || keysym == XK_Down)
 		draw_map(vars->map, vars);
 	return (0);

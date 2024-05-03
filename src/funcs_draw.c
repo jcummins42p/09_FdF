@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:11:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/02 13:17:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:30:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ t_vector	*direction_vector(t_vector *origin, t_vector *end)
 	direction = malloc(sizeof(t_vector));
 	if (!direction)
 		return (NULL);
-	direction->x = end->x - origin->x;
-	direction->y = end->y - origin->y;
+	direction->x = end->px - origin->px;
+	direction->y = end->py - origin->py;
 	direction->length = vector_length(direction->x, direction->y);
 	return (direction);
 }
@@ -50,8 +50,8 @@ void	connect_points(t_img_vars img, t_vector *origin, t_vector *end)
 		colour_components(origin);
 		colour_components(end);
 		colour = colour_gradient(origin, end, i);
-		my_mlx_pixel_put(&img, (origin->x + (i * dir->x)), \
-				(origin->y + (i * dir->y)), colour);
+		my_mlx_pixel_put(&img, (origin->px + (i * dir->x)), \
+				(origin->py + (i * dir->y)), colour);
 		i += step;
 	}
 	free (dir);
