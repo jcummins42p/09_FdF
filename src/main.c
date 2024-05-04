@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/04 00:55:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:43:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ void set_scale(t_map *map)
 	int	grid_height;
 
     base_scale_w = (RES_W / map->width_x) >> 1;
-    base_scale_h = (RES_H / map->height_y) >> 1;
+    base_scale_h = (RES_H / map->height_y);
 	if (base_scale_w < base_scale_h)
 	   	map->scale = base_scale_w;
 	else
 		map->scale = base_scale_h;
 	if (map->scale < 1)
 		map->scale = 1;
-	/*grid_width = (map->width_x + map->height_y) * map->scale / 2;*/
+	/*grid_width = (map->width_x - map->height_y) * map->scale / 2;*/
 	grid_height = (map->width_x + map->height_y) * map->scale / 4;
-	map->offset_x = (RES_W) / 2;
+	map->offset_x = ((RES_W) / 2);
 	map->offset_y = ((RES_H - grid_height) >> 1);
 	if (map->scale == 1)
 	{
-		map->offset_x = (RES_W) >> 1;
+		map->offset_x = ((RES_W) >> 1);
 		map->offset_y = (RES_H - grid_height) >> 1;
 	}
 }
