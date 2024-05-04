@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/03 17:57:00 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:24:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void		free_map(t_map *map);
 void		free_split(char **split);
 
 //		main.c
+void		project_map(t_map *map);
 int			draw_map(t_map *map, t_mlx_vars *mlx);
 
 #endif

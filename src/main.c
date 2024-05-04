@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/04 11:43:06 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:50:23 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	set_height_colour(t_map *map, t_vector *point, char *str)
 		if (str[i] != '\n' && str[i] != '-' && !ft_isdigit(str[i]))
 		{
 			spl_point = ft_split(str, ',');
-			point->z = ft_atoi(spl_point[0]) * map->z_scale;
+			point->z = ft_atoi(spl_point[0]);
 			point->c = ft_atoi_hex(spl_point[1]);
 			free_split(spl_point);
 			return ;
@@ -115,7 +115,7 @@ void	project_map(t_map *map)
 		{
 			map->points[y][x]->px = map->scale * (x - y) + map->offset_x;
 			map->points[y][x]->py = ((map->scale * \
-					(x + y)) / 2) + map->offset_y - map->points[y][x]->z;
+					(x + y)) / 2) + map->offset_y - (map->points[y][x]->z * map->z_scale);
 			x++;
 		}
 		y++;
