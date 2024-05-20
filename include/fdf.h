@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/04 12:24:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:43:30 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct	s_vector
 {
 	int		x;
 	int		y;
-	int		z;
+	float	z;
 	int		px;
 	int		py;
 	unsigned int		c;
@@ -58,12 +58,16 @@ typedef struct	s_map
 {
 	char			*name;
 	int				fd;
+	float			rotate;
+	float			angle;
 	unsigned int	width_x;
+	unsigned int	x;
 	unsigned int	height_y;
+	unsigned int	y;
 	unsigned int	scale;
-	unsigned int	offset_x;
-	unsigned int	offset_y;
-	int				z_scale;
+	int				offset_x;
+	int				offset_y;
+	float			z_scale;
 	int				c_default;
 	t_vector		***points;
 }				t_map;
@@ -85,12 +89,14 @@ int			handle_keypress(int keysym, t_mlx_vars *vars);
 void		my_mlx_pixel_put(t_img_vars *data, int x, int y, int color);
 t_vector	*direction_vector(t_vector *origin, t_vector *end);
 void		connect_points(t_img_vars img, t_vector *origin, t_vector *end);
+int			draw_map(t_map *map, t_mlx_vars *mlx);
 
 //		funcs_colour.c
 void		colour_components(t_vector *vector);
 int			colour_gradient(t_vector *origin, t_vector *end, float ratio);
 int			colour_increment(int origin, int increment);
 int			get_colour_arg(char *str);
+void		set_height_colour(t_map *map, t_vector *point, char *str);
 
 //		vectormath.c
 float		vector_length(int x, int y);
@@ -106,8 +112,12 @@ void		draw_circle(t_img_vars img, t_vector *centre, int radius, int color);
 void		free_map(t_map *map);
 void		free_split(char **split);
 
+//		init_map.c
+void	set_scale(t_map *map);
+int		set_dimensions(t_map *map);
+void	map_init(t_map *map);
+
 //		main.c
 void		project_map(t_map *map);
-int			draw_map(t_map *map, t_mlx_vars *mlx);
 
 #endif

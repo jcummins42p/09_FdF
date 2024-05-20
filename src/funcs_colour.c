@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:11:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/03 17:57:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:18:24 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,26 @@ int	get_colour_arg(char *str)
 		return (0x00222222);
 	else
 		return (0x00FFFFFF);
+}
+
+void	set_height_colour(t_map *map, t_vector *point, char *str)
+{
+	char	**spl_point;
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '\n' && str[i] != '-' && !ft_isdigit(str[i]))
+		{
+			spl_point = ft_split(str, ',');
+			point->z = ft_atoi(spl_point[0]);
+			point->c = ft_atoi_hex(spl_point[1]);
+			free_split(spl_point);
+			return ;
+		}
+		i++;
+	}
+	point->z = ft_atoi(str);
+	point->c = colour_increment(map->c_default, point->z);
 }
