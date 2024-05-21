@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hookhandlers.c                                     :+:      :+:    :+:   */
+/*   hookhandle_kb.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 14:32:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/21 20:45:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ int	k_release(int keysym, void *vars)
 	return (0);
 }
 
+void	k_rescale(int keysym, t_mlx_vars *vars)
+{
+	if (keysym == XK_n)
+		vars->map->z_scale -= (0.01);
+	else if (keysym == XK_m)
+		vars->map->z_scale += (0.01);
+	reset_colourscale(vars->map);
+}
+
 int	k_control(int keysym, t_mlx_vars *vars)
 {
 	if (keysym == XK_w || keysym == XK_s)
@@ -34,12 +43,12 @@ int	k_control(int keysym, t_mlx_vars *vars)
 		k_dir_key(keysym, vars);
 	else if ((keysym >= XK_0 && keysym <= XK_9) || keysym == XK_d)
 		k_color_key(keysym, vars);
+	else if (keysym == XK_t)
+		toggle_default_colour(vars->map);
 	else if ((keysym >= XK_q || keysym == XK_e))
 		k_rotate(keysym, vars);
-	else if (keysym == XK_n)
-		vars->map->z_scale -= (0.01);
-	else if (keysym == XK_m)
-		vars->map->z_scale += (0.01);
+	else if (keysym == XK_n || keysym == XK_m)
+		k_rescale(keysym, vars);
 	else if (keysym == XK_comma || keysym == XK_period)
 		k_zoom(keysym, vars);
 	else

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
+/*   set_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:18:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 14:39:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/21 20:55:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	set_defaults(t_map *map, char **argv)
 		return (0);
 	map->name = (argv[1]);
 	map->z_scale = 0.1;
-	map->c_default = 0x00FFFFFF;
+	map->c_default = 0x00224488;
 	map->angle = 2.0;
 	map->rotate = 0;
 	return (1);
@@ -105,26 +105,26 @@ int	map_assign(t_map *map, char *line, char **spline)
 	return (1);
 }
 
-int	map_init(t_map *map)
+void	set_height_colour(t_map *map, t_vector *point, char *str)
 {
-	char			*line;
-	char			**spline;
+	char	**spl_point;
+	int		i;
 
-	map->fd = open(map->name, O_RDONLY);
-	if (map->fd < 0)
-		return (0);
-	map->points = malloc(sizeof(t_vector **) * map->height_y);
-	if (!map->points)
+	i = 0;
+	while (str[i])
 	{
-		close(map->fd);
-		return (0);
+		if (str[i] != '\n' && str[i] != '-' && !ft_isdigit(str[i]))
+		{
+			spl_point = ft_split(str, ',');
+			point->z = ft_atoi(spl_point[0]);
+			point->c = ft_atoi_hex(spl_point[1]);
+			point->file_colour = point->c;
+			free_split(spl_point);
+			return ;
+		}
+		i++;
 	}
-	else
-	{
-		line = get_next_line(map->fd);
-		spline = ft_split(line, ' ');
-		map_assign(map, line, spline);
-	}
-	close(map->fd);
-	return (1);
+	point->file_colour = 0;
+	point->z = ft_atoi(str);
+	point->c = colour_increment(map->c_default, (int)(point->z * map->z_scale));
 }

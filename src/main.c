@@ -6,11 +6,35 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 14:36:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/21 20:54:34 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int	map_init(t_map *map)
+{
+	char			*line;
+	char			**spline;
+
+	map->fd = open(map->name, O_RDONLY);
+	if (map->fd < 0)
+		return (0);
+	map->points = malloc(sizeof(t_vector **) * map->height_y);
+	if (!map->points)
+	{
+		close(map->fd);
+		return (0);
+	}
+	else
+	{
+		line = get_next_line(map->fd);
+		spline = ft_split(line, ' ');
+		map_assign(map, line, spline);
+	}
+	close(map->fd);
+	return (1);
+}
 
 int	set_mlx(t_map *map, t_mlx_vars *mlx)
 {

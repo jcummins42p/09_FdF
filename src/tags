@@ -1,0 +1,46 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/nfs/homes/jcummins/Projects/09_FdF/src/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+cleanup	main.c	/^void	cleanup(t_map *map, t_mlx_vars *mlx)$/;"	f	typeref:typename:void
+colour_components	funcs_colour.c	/^void	colour_components(t_vector *vector)$/;"	f	typeref:typename:void
+colour_gradient	funcs_colour.c	/^int	colour_gradient(t_vector *origin, t_vector *end, float ratio)$/;"	f	typeref:typename:int
+colour_increment	funcs_colour.c	/^int	colour_increment(int origin, int increment)$/;"	f	typeref:typename:int
+connect_points	funcs_draw.c	/^void	connect_points(t_img_vars img, t_vector *origin, t_vector *end)$/;"	f	typeref:typename:void
+direction_vector	funcs_draw.c	/^t_vector	*direction_vector(t_vector *origin, t_vector *end)$/;"	f	typeref:typename:t_vector *
+draw_circle	circledraw.c	/^void	draw_circle(t_img_vars img, t_vector *point, int rad, int color)$/;"	f	typeref:typename:void
+draw_map	funcs_draw.c	/^void	draw_map(t_map *map, t_mlx_vars *mlx)$/;"	f	typeref:typename:void
+fl_abs	vectormaths.c	/^float	fl_abs(float f)$/;"	f	typeref:typename:float
+free_map	funcs_free.c	/^void	free_map(t_map *map)$/;"	f	typeref:typename:void
+free_split	funcs_free.c	/^void	free_split(char **split)$/;"	f	typeref:typename:void
+get_colour_arg	funcs_colour.c	/^int	get_colour_arg(char *str)$/;"	f	typeref:typename:int
+k_color_key	controls_kb.c	/^void	k_color_key(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:void
+k_control	hookhandle_kb.c	/^int	k_control(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:int
+k_dir_key	controls_kb.c	/^void	k_dir_key(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:void
+k_no_event	hookhandle_kb.c	/^int	k_no_event(void *vars)$/;"	f	typeref:typename:int
+k_press	hookhandle_kb.c	/^int	k_press(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:int
+k_release	hookhandle_kb.c	/^int	k_release(int keysym, void *vars)$/;"	f	typeref:typename:int
+k_rotate	controls_kb.c	/^void	k_rotate(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:void
+k_tilt	controls_kb.c	/^void	k_tilt(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:void
+k_zoom	controls_kb.c	/^void	k_zoom(int keysym, t_mlx_vars *vars)$/;"	f	typeref:typename:void
+main	main.c	/^int	main(int argc, char *argv[])$/;"	f	typeref:typename:int
+map_assign	init_map.c	/^int	map_assign(t_map *map, char *line, char **spline)$/;"	f	typeref:typename:int
+map_init	init_map.c	/^int	map_init(t_map *map)$/;"	f	typeref:typename:int
+my_mlx_pixel_put	funcs_draw.c	/^void	my_mlx_pixel_put(t_img_vars *data, int x, int y, int color)$/;"	f	typeref:typename:void
+new_vector	vectormaths.c	/^t_vector	*new_vector(int x, int y, int z, int c)$/;"	f	typeref:typename:t_vector *
+norm_vd	vectormaths.c	/^float	norm_vd(t_vector *direction, int dimension)$/;"	f	typeref:typename:float
+normalize_vector	vectormaths.c	/^t_unit_vect	*normalize_vector(t_vector *direction)$/;"	f	typeref:typename:t_unit_vect *
+project_map	funcs_draw.c	/^int	project_map(t_map *map)$/;"	f	typeref:typename:int
+set_defaults	init_map.c	/^int	set_defaults(t_map *map, char **argv)$/;"	f	typeref:typename:int
+set_dimensions	init_map.c	/^int	set_dimensions(t_map *map)$/;"	f	typeref:typename:int
+set_height_colour	funcs_colour.c	/^void	set_height_colour(t_map *map, t_vector *point, char *str)$/;"	f	typeref:typename:void
+set_mlx	main.c	/^int	set_mlx(t_map *map, t_mlx_vars *mlx)$/;"	f	typeref:typename:int
+set_scale	init_map.c	/^int	set_scale(t_map *map)$/;"	f	typeref:typename:int
+vector_length	vectormaths.c	/^float	vector_length(int x, int y)$/;"	f	typeref:typename:float

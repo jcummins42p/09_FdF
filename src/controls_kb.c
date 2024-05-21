@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   funcs_controls.c                                   :+:      :+:    :+:   */
+/*   controls_kb.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 11:52:08 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 14:31:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:15:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ void	k_zoom(int keysym, t_mlx_vars *vars)
 	{
 		vars->map->scale += 1;
 		vars->map->offset_y -= sqrt(vars->map->scale);
-		vars->map->offset_x -= sqrt(vars->map->scale);
 	}
 	else if (keysym == XK_comma)
 	{
 		if (vars->map->scale > 1)
 		{
 			vars->map->scale -= 1;
+			vars->map->offset_y += sqrt(vars->map->scale);
 		}
 	}
 }

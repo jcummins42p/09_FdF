@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 14:32:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/21 20:35:55 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_vector
 	float			z;
 	int				px;
 	int				py;
+	unsigned int	file_colour;
 	unsigned int	c;
 	int				c_red;
 	int				c_grn;
@@ -65,6 +66,8 @@ typedef struct s_map
 	unsigned int	height_y;
 	unsigned int	y;
 	unsigned int	scale;
+	int				z_max;
+	int				z_min;
 	int				offset_x;
 	int				offset_y;
 	float			z_scale;
@@ -79,11 +82,22 @@ typedef struct s_mlx_vars
 	t_map	*map;
 }				t_mlx_vars;
 
-//		hookhandlers.c
+//		hookhandler_kb.c
 int			mlx_close(int keycode, t_mlx_vars *vars);
 int			k_no_event(void *vars);
 int			k_release(int keysym, void *vars);
 int			k_press(int keysym, t_mlx_vars *vars);
+
+//		controls_kb.c
+void		k_color_key(int keysym, t_mlx_vars *vars);
+void		k_dir_key(int keysym, t_mlx_vars *vars);
+void		k_zoom(int keysym, t_mlx_vars *vars);
+void		k_rotate(int keysym, t_mlx_vars *vars);
+void		k_tilt(int keysym, t_mlx_vars *vars);
+
+//		controls_mouse.c
+int			m_release(int keysym, void *vars);
+int			m_press(int keysym, t_mlx_vars *vars);
 
 //		drawfuncts.c
 void		my_mlx_pixel_put(t_img_vars *data, int x, int y, int color);
@@ -96,6 +110,8 @@ void		draw_map(t_map *map, t_mlx_vars *mlx);
 void		colour_components(t_vector *vector);
 int			colour_gradient(t_vector *origin, t_vector *end, float ratio);
 int			colour_increment(int origin, int increment);
+void		reset_colourscale(t_map *map);
+void		toggle_default_colour(t_map *map);
 int			get_colour_arg(char *str);
 void		set_height_colour(t_map *map, t_vector *point, char *str);
 
@@ -119,13 +135,6 @@ int			set_scale(t_map *map);
 int			set_dimensions(t_map *map);
 int			map_assign(t_map *map, char *line, char **spline);
 int			map_init(t_map *map);
-
-//		funcs_controls.c
-void		k_color_key(int keysym, t_mlx_vars *vars);
-void		k_dir_key(int keysym, t_mlx_vars *vars);
-void		k_zoom(int keysym, t_mlx_vars *vars);
-void		k_rotate(int keysym, t_mlx_vars *vars);
-void		k_tilt(int keysym, t_mlx_vars *vars);
 
 //		main.c
 
