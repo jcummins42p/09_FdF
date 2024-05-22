@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 20:54:34 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:51:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	cleanup(t_mlx_vars *mlx)
+{
+	mlx_destroy_display(mlx->mlx);
+	free_map(mlx->map);
+	free(mlx->map);
+	free(mlx->mlx);
+	free(mlx);
+}
+
+int	handle_destroy(void *params)
+{
+	t_mlx_vars *vars;
+	vars = (t_mlx_vars *)params;
+	mlx_loop_end(vars->mlx);
+	mlx_destroy_window(vars->mlx, vars->win);
+	return (0);
+}
 
 int	map_init(t_map *map)
 {
@@ -50,7 +68,10 @@ int	set_mlx(t_map *map, t_mlx_vars *mlx)
 				mlx_loop_hook(mlx->mlx, &k_no_event, mlx);
 				mlx_hook(mlx->win, KeyPress, KeyPressMask, &k_press, mlx);
 				mlx_hook(mlx->win, KeyRelease, KeyReleaseMask, &k_release, mlx);
-				draw_map(map, mlx);
+				mlx_hook(mlx->win, ButtonPress, ButtonPressMask, &b_press, mlx);
+				mlx_hook(mlx->win, ButtonRelease, ButtonReleaseMask, \
+						&b_release, mlx);
+				mlx_hook(mlx->win, ON_DESTROY, ButtonPressMask, &handle_destroy, mlx);
 				return (1);
 			}
 			mlx_destroy_display(mlx->mlx);
@@ -62,29 +83,15 @@ int	set_mlx(t_map *map, t_mlx_vars *mlx)
 	return (0);
 }
 
-void	cleanup(t_map *map, t_mlx_vars *mlx)
-{
-	mlx_destroy_display(mlx->mlx);
-	free_map(map);
-	free(map);
-	free(mlx->mlx);
-	free(mlx);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_map			*map;
 	t_mlx_vars		*mlx;
 
-	if (argc != 2)
-	{
-		ft_printf("Please provide a map file only\n");
-		return (1);
-	}
 	map = malloc(sizeof (t_map));
 	if (!map)
 		return (1);
-	if (!set_defaults(map, argv) || ! set_dimensions(map))
+	if (argc != 2 || !set_defaults(map, argv) || ! set_dimensions(map))
 	{
 		ft_printf("Invalid map file\n");
 		free(map);
@@ -95,7 +102,9 @@ int	main(int argc, char *argv[])
 	mlx = malloc(sizeof(t_mlx_vars));
 	if (!set_mlx(map, mlx))
 		return (1);
+	draw_map(map, mlx);
+	display_hud(mlx);
 	mlx_loop(mlx->mlx);
-	cleanup(map, mlx);
+	cleanup(mlx);
 	return (0);
 }

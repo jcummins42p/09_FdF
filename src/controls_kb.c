@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 11:52:08 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 19:15:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:42:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	k_color_key(int keysym, t_mlx_vars *vars)
 {
-	free_map(vars->map);
 	if (keysym == XK_1)
 		vars->map->c_default = 0x00FF0000;
 	else if (keysym == XK_2)
@@ -35,9 +34,7 @@ void	k_color_key(int keysym, t_mlx_vars *vars)
 		vars->map->c_default = 0x000000FF;
 	else if (keysym == XK_0)
 		vars->map->c_default = 0x00FF00FF;
-	else
-		vars->map->c_default = 0x00FFFFFF;
-	map_init(vars->map);
+	reset_colourscale(vars->map);
 }
 
 void	k_dir_key(int keysym, t_mlx_vars *vars)
@@ -58,6 +55,21 @@ void	k_dir_key(int keysym, t_mlx_vars *vars)
 		vars->map->offset_y -= 10 * inverted;
 }
 
+void	k_zshift_radius(int keysym, t_mlx_vars *vars)
+{
+	if (keysym == XK_x)
+	{
+		vars->map->z_rad += 1;
+	}
+	else if (keysym == XK_z)
+	{
+		if (vars->map->z_rad > 1)
+		{
+			vars->map->z_rad -= 1;
+		}
+	}
+}
+
 void	k_zoom(int keysym, t_mlx_vars *vars)
 {
 	if (keysym == XK_period)
@@ -75,26 +87,22 @@ void	k_zoom(int keysym, t_mlx_vars *vars)
 	}
 }
 
-void	k_rotate(int keysym, t_mlx_vars *vars)
+void	k_tilt_rotate(int keysym, t_mlx_vars *vars)
 {
 	if (keysym == XK_q)
 		vars->map->rotate += 0.01;
 	else if (keysym == XK_e)
 		vars->map->rotate -= 0.01;
-}
-
-void	k_tilt(int keysym, t_mlx_vars *vars)
-{
-	if (keysym == XK_s)
+	else if (keysym == XK_s)
 	{
-		if (vars->map->angle < 100)
+		if (vars->map->angle < MAX_TILT)
 		{
 			vars->map->angle *= 1.1;
 		}
 	}
 	else if (keysym == XK_w)
 	{
-		if (vars->map->angle > 2)
+		if (vars->map->angle > MIN_TILT)
 		{
 			vars->map->angle /= 1.1;
 		}

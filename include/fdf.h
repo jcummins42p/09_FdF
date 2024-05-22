@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 20:35:55 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:39:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@
 
 # define RES_H	900
 # define RES_W	1800
+# define MIN_TILT 1.5
+# define MAX_TILT 100
+# define DEF_C 0x00AAAAAA
+
+enum
+{
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
 
 typedef struct s_unit_vect
 {
@@ -35,6 +49,7 @@ typedef struct s_vector
 {
 	int				x;
 	int				y;
+	float			file_z;
 	float			z;
 	int				px;
 	int				py;
@@ -66,12 +81,13 @@ typedef struct s_map
 	unsigned int	height_y;
 	unsigned int	y;
 	unsigned int	scale;
-	int				z_max;
-	int				z_min;
 	int				offset_x;
 	int				offset_y;
 	float			z_scale;
+	int				z_brush;
+	int				z_rad;
 	int				c_default;
+	int				c_toggle;
 	t_vector		***points;
 }				t_map;
 
@@ -82,8 +98,25 @@ typedef struct s_mlx_vars
 	t_map	*map;
 }				t_mlx_vars;
 
+//		hud.c
+void		display_hud(t_mlx_vars *mlx);
+
+//		controls_defaults.c
+void		k_defaults(int keysym, t_mlx_vars *vars);
+void		reset_heightmap(t_map *map);
+
+//		hookhandle_mouse.c
+int			b_no_event(void *vars);
+int			b_release(int button, void *vars);
+void		b_zoom(int button, t_mlx_vars *vars);
+int			b_control(int button, int x, int y, t_mlx_vars *vars);
+int			b_press(int button, int x, int y, t_mlx_vars *vars);
+
+//		controls_mouse.c
+void		b_zshift(int button, int x, int y, t_mlx_vars *vars);
+void		b_zshift_strength(int button, int x, int y, t_mlx_vars *vars);
+
 //		hookhandler_kb.c
-int			mlx_close(int keycode, t_mlx_vars *vars);
 int			k_no_event(void *vars);
 int			k_release(int keysym, void *vars);
 int			k_press(int keysym, t_mlx_vars *vars);
@@ -92,12 +125,8 @@ int			k_press(int keysym, t_mlx_vars *vars);
 void		k_color_key(int keysym, t_mlx_vars *vars);
 void		k_dir_key(int keysym, t_mlx_vars *vars);
 void		k_zoom(int keysym, t_mlx_vars *vars);
-void		k_rotate(int keysym, t_mlx_vars *vars);
-void		k_tilt(int keysym, t_mlx_vars *vars);
-
-//		controls_mouse.c
-int			m_release(int keysym, void *vars);
-int			m_press(int keysym, t_mlx_vars *vars);
+void		k_tilt_rotate(int keysym, t_mlx_vars *vars);
+void		k_zshift_radius(int keysym, t_mlx_vars *vars);
 
 //		drawfuncts.c
 void		my_mlx_pixel_put(t_img_vars *data, int x, int y, int color);

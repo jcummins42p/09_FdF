@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:11:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 20:55:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:58:23 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	reset_colourscale(t_map *map)
 		while (map->x < map->width_x)
 		{
 			point = map->points[map->y][map->x];
-			if (!point->file_colour)
+			if (!point->file_colour || map->c_toggle)
 			{
 				point->c = colour_increment(map->c_default, \
 					(int)(point->z * map->z_scale));
@@ -75,7 +75,6 @@ void	reset_colourscale(t_map *map)
 void	toggle_default_colour(t_map *map)
 {
 	t_vector		*point;
-	static int		toggle = 0;
 
 	map->y = 0;
 	while (map->y < map->height_y)
@@ -84,7 +83,7 @@ void	toggle_default_colour(t_map *map)
 		while (map->x < map->width_x)
 		{
 			point = map->points[map->y][map->x];
-			if (!toggle)
+			if (!map->c_toggle || !point->file_colour)
 			{
 				point->c = colour_increment(map->c_default, \
 					(int)(point->z * map->z_scale));
@@ -95,10 +94,10 @@ void	toggle_default_colour(t_map *map)
 		}
 		map->y++;
 	}
-	if (toggle)
-		toggle = 0;
+	if (map->c_toggle)
+		map->c_toggle = 0;
 	else
-		toggle = 1;
+		map->c_toggle = 1;
 }
 /*int	get_colour_arg(char *str)*/
 /*{*/

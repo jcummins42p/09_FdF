@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hookhandle_kb.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 20:45:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:52:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	k_rescale(int keysym, t_mlx_vars *vars)
 
 int	k_control(int keysym, t_mlx_vars *vars)
 {
-	if (keysym == XK_w || keysym == XK_s)
-		k_tilt(keysym, vars);
+	if (keysym == XK_d)
+		k_defaults(keysym, vars);
 	else if ((keysym >= XK_Left && keysym <= XK_Down) \
 			|| keysym == XK_o || keysym == XK_i)
 		k_dir_key(keysym, vars);
@@ -45,12 +45,15 @@ int	k_control(int keysym, t_mlx_vars *vars)
 		k_color_key(keysym, vars);
 	else if (keysym == XK_t)
 		toggle_default_colour(vars->map);
-	else if ((keysym >= XK_q || keysym == XK_e))
-		k_rotate(keysym, vars);
+	else if (keysym == XK_q || keysym == XK_e \
+			|| keysym == XK_s || keysym == XK_w)
+		k_tilt_rotate(keysym, vars);
 	else if (keysym == XK_n || keysym == XK_m)
 		k_rescale(keysym, vars);
 	else if (keysym == XK_comma || keysym == XK_period)
 		k_zoom(keysym, vars);
+	else if (keysym == XK_x || keysym == XK_z)
+		k_zshift_radius(keysym, vars);
 	else
 		return (0);
 	return (1);
@@ -62,14 +65,19 @@ int	k_press(int keysym, t_mlx_vars *vars)
 
 	redraw = 0;
 	if (keysym == XK_Escape)
+	{
+		mlx_loop_end(vars->mlx);
 		mlx_destroy_window(vars->mlx, vars->win);
+	}
 	else
 		redraw = k_control(keysym, vars);
 	ft_printf("Keypress: %d\n", keysym);
 	if (redraw)
 	{
+		reset_colourscale(vars->map);
 		project_map(vars->map);
 		draw_map(vars->map, vars);
+		display_hud(vars);
 	}
 	return (0);
 }

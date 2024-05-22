@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:18:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/21 20:55:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:54:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	set_defaults(t_map *map, char **argv)
 		return (0);
 	map->name = (argv[1]);
 	map->z_scale = 0.1;
-	map->c_default = 0x00224488;
+	map->z_brush = 5;
+	map->z_rad = 1;
+	map->c_default = DEF_C;
+	map->c_toggle = 0;
 	map->angle = 2.0;
 	map->rotate = 0;
 	return (1);
@@ -117,6 +120,7 @@ void	set_height_colour(t_map *map, t_vector *point, char *str)
 		{
 			spl_point = ft_split(str, ',');
 			point->z = ft_atoi(spl_point[0]);
+			point->file_z = point->z;
 			point->c = ft_atoi_hex(spl_point[1]);
 			point->file_colour = point->c;
 			free_split(spl_point);
@@ -126,5 +130,7 @@ void	set_height_colour(t_map *map, t_vector *point, char *str)
 	}
 	point->file_colour = 0;
 	point->z = ft_atoi(str);
+	point->file_z = point->z;
 	point->c = colour_increment(map->c_default, (int)(point->z * map->z_scale));
+	point->file_colour = point->c;
 }
