@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:44:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 16:51:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:54:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	cleanup(t_mlx_vars *mlx)
 
 int	handle_destroy(void *params)
 {
-	t_mlx_vars *vars;
+	t_mlx_vars	*vars;
+
 	vars = (t_mlx_vars *)params;
-	mlx_loop_end(vars->mlx);
-	mlx_destroy_window(vars->mlx, vars->win);
+	k_press(0xff1b, vars);
 	return (0);
 }
 
@@ -65,13 +65,13 @@ int	set_mlx(t_map *map, t_mlx_vars *mlx)
 			if (mlx->win != NULL)
 			{
 				mlx->map = map;
-				mlx_loop_hook(mlx->mlx, &k_no_event, mlx);
 				mlx_hook(mlx->win, KeyPress, KeyPressMask, &k_press, mlx);
 				mlx_hook(mlx->win, KeyRelease, KeyReleaseMask, &k_release, mlx);
 				mlx_hook(mlx->win, ButtonPress, ButtonPressMask, &b_press, mlx);
 				mlx_hook(mlx->win, ButtonRelease, ButtonReleaseMask, \
 						&b_release, mlx);
-				mlx_hook(mlx->win, ON_DESTROY, ButtonPressMask, &handle_destroy, mlx);
+				mlx_hook(mlx->win, ON_DESTROY, ButtonPressMask, \
+						&handle_destroy, mlx);
 				return (1);
 			}
 			mlx_destroy_display(mlx->mlx);
@@ -105,6 +105,7 @@ int	main(int argc, char *argv[])
 	draw_map(map, mlx);
 	display_hud(mlx);
 	mlx_loop(mlx->mlx);
+	mlx_destroy_window(mlx->mlx, mlx->win);
 	cleanup(mlx);
 	return (0);
 }

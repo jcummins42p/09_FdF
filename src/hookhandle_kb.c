@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 16:52:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:56:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	k_press(int keysym, t_mlx_vars *vars)
 	redraw = 0;
 	if (keysym == XK_Escape)
 	{
+		ft_printf("escape pressed\n");
 		mlx_loop_end(vars->mlx);
-		mlx_destroy_window(vars->mlx, vars->win);
 	}
 	else
 		redraw = k_control(keysym, vars);
