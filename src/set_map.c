@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:18:30 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 15:54:18 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:56:29 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	set_defaults(t_map *map, char **argv)
 	if (map->fd < 0)
 		return (0);
 	map->name = (argv[1]);
-	map->z_scale = 0.1;
+	map->z_scale = 0.01;
 	map->z_brush = 5;
 	map->z_rad = 1;
 	map->c_default = DEF_C;
