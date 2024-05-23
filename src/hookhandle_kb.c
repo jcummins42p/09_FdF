@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/23 13:13:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:34:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	k_control(int keysym, t_mlx_vars *vars)
 	}
 	else if (keysym == XK_t)
 		toggle_default_colour(vars->map);
+	else if (keysym == XK_c)
+		christmas(keysym, vars);
 	else if (keysym == XK_q || keysym == XK_e \
 			|| keysym == XK_s || keysym == XK_w)
 		k_tilt_rotate(keysym, vars);

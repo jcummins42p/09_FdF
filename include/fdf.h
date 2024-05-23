@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:27:25 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 17:41:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:37:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ typedef struct s_mlx_vars
 	void	*win;
 	t_map	*map;
 }				t_mlx_vars;
+
+//		christmas.c
+void		christmas(int keysym, t_mlx_vars *vars);
 
 //		hud.c
 void		display_hud(t_mlx_vars *mlx);
