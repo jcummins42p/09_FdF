@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 17:56:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:13:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ int	k_control(int keysym, t_mlx_vars *vars)
 	else if ((keysym >= XK_Left && keysym <= XK_Down) \
 			|| keysym == XK_o || keysym == XK_i)
 		k_dir_key(keysym, vars);
-	else if ((keysym >= XK_0 && keysym <= XK_9) || keysym == XK_d)
+	else if ((keysym >= XK_0 && keysym <= XK_9))
+	{
+		ft_printf("Should be changing color");
 		k_color_key(keysym, vars);
+	}
 	else if (keysym == XK_t)
 		toggle_default_colour(vars->map);
 	else if (keysym == XK_q || keysym == XK_e \

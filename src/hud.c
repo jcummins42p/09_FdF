@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:41:50 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/22 15:27:56 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:02:04 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,6 @@ void	display_hud(t_mlx_vars *mlx)
 			"z/x: Decrease/Increase brush radius");
 	mlx_string_put(mlx->mlx, mlx->win, 50, 290, DEF_C, \
 			"n/m: Decrease/Increase heightmap multiplier");
+	mlx_string_put(mlx->mlx, mlx->win, 50, 310, DEF_C, \
+			"Number Keys will not work unless setxkbmap is set to us");
 }
