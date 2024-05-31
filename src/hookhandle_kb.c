@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:32:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/05/23 17:50:24 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:57:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	k_release(int keysym, void *vars)
 void	k_rescale(int keysym, t_mlx_vars *vars)
 {
 	if (keysym == XK_n)
-		vars->map->z_scale -= (0.01);
+		vars->map->z_scale -= (0.001);
 	else if (keysym == XK_m)
-		vars->map->z_scale += (0.01);
+		vars->map->z_scale += (0.001);
 	reset_colourscale(vars->map);
 }
 
